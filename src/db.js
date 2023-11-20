@@ -1,6 +1,7 @@
-import mongoose from 'mongoose'
-import { mongoUri } from './config.js'
+import mongoose from "mongoose";
+import { mongoUri } from "./config.js";
 
-mongoose.connect(mongoUri)
-    .then(() => console.log("Conectado a MongoDb"))
-    .catch((e) => console.log(e))
+mongoose
+  .connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("Conectado a MongoDb"))
+  .catch((e) => console.log(e));
