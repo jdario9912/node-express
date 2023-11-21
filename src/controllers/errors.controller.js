@@ -1,9 +1,15 @@
 export const castErrorHandler = (error, req, res, next) => {
-  if (error.name == "CastError")
-    return res.status(400).send({ error: "Formato incorrecto" });
+  switch (error.name) {
+    case "CastError":
+      return res.status(400).json({ mensaje: "Formato incorrecto" });
 
-  next(error);
+    case "TokenExpiredError":
+      return res.status(401).json({ mensaje: "La token expiro." });
+
+    default:
+      next(error);
+  }
 };
 
 export const defaultErrorHandler = (error, req, res) =>
-  res.status(501).send({ error: error.message });
+  res.status(501).json({ mensaje: error.message });

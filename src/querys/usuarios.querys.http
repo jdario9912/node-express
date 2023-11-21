@@ -1,0 +1,43 @@
+GET http://localhost:3200
+###
+POST http://localhost:3200
+###
+PUT http://localhost:3200
+###
+DELETE http://localhost:3200
+
+###
+GET http://localhost:3200/api/usuarios
+
+###
+GET http://localhost:3200/api/usuarios/655ce9af330d48cf24bbfc23
+
+###
+POST http://localhost:3200/api/usuarios
+Content-Type: application/json
+
+{
+  "nombre": "Natalia",
+  "email": "natalia@email.com",
+  "password": "nataliasecreto"
+}
+
+###
+DELETE http://localhost:3200/api/usuarios/655b9882b3c3b094401be6c0
+
+###
+PATCH http://localhost:3200/api/usuarios/655ce62ff0cddaecbc9f09b0
+Content-Type: application/json
+
+{
+  "passwordHash": "caruchasecreto"
+}
+
+###
+PATCH http://localhost:3200/api/usuarios/cambiar-password/655ce9af330d48cf24bbfc23
+Content-Type: application/json
+
+{
+  "password": "",
+  "nuevaPassword": ""
+}

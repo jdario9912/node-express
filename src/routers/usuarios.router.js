@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
-  actualizar,
-  eliminar,
+  actualizarPorId,
+  eliminarPorId,
   guardarUsuario,
   obtenerPorId,
   obtenerTodos,
@@ -12,7 +12,7 @@ const usuariosRouter = Router();
 usuariosRouter.post("/", guardarUsuario);
 usuariosRouter.get("/", obtenerTodos);
 usuariosRouter.get("/:id", obtenerPorId);
-usuariosRouter.delete('/:id', eliminar)
-usuariosRouter.patch('/:id', actualizar)
+usuariosRouter.delete("/:id", eliminarPorId);
+usuariosRouter.patch("/:id", actualizarPorId);
 
 export default usuariosRouter;

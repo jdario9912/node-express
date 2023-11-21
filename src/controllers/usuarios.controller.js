@@ -1,8 +1,12 @@
-import { Usuario } from "../models/usuarios.js";
+import { Usuario } from "../models/usuarios.model.js";
+import bcrypt from "bcrypt";
 
 export const guardarUsuario = async (req, res, next) => {
+  const body = req.body;
   try {
-    const usuario = new Usuario(req.body);
+    const passwordHash = await bcrypt.hash(body.password, 10);
+
+    const usuario = new Usuario({ ...body, passwordHash, creado: Date.now() });
 
     const usuarioGuardado = await usuario.save();
 
@@ -12,11 +16,13 @@ export const guardarUsuario = async (req, res, next) => {
   }
 };
 
-export const obtenerTodos = async (req, res, next) => {
+export const obtenerTodos = async (_, res, next) => {
   try {
     const usuarios = await Usuario.find({});
 
-    return res.status(200).json({ usuarios });
+    return res.status(200).json({
+      usuarios: usuarios.sort((a, b) => a.nombre.localeCompare(b.nombre)),
+    });
   } catch (error) {
     next(error);
   }
@@ -37,12 +43,17 @@ export const obtenerPorId = async (req, res, next) => {
   }
 };
 
-export const eliminar = async (req, res, next) => {
+export const eliminarPorId = async (req, res, next) => {
   try {
     const usuarioEliminado = await Usuario.findByIdAndDelete(req.params.id);
 
-    if (usuarioEliminado.deletedCount == 0)
-      throw new Error("No se pudo borrar el usuario.");
+    if (!usuarioEliminado)
+      return res.status(501).json({ mensaje: "No se pudo borrar el usuario." });
+
+    if (usuarioEliminado.deletedCount === 0)
+      return res
+        .status(500)
+        .json({ mensaje: "No se pudo eliminar el usuario." });
 
     return res.status(204).send(null);
   } catch (error) {
@@ -50,9 +61,19 @@ export const eliminar = async (req, res, next) => {
   }
 };
 
-export const actualizar = async (req, res, next) => {
+export const actualizarPorId = async (req, res, next) => {
   try {
-    // seguir aca
+    const actualizado = await Usuario.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    if (!actualizado)
+      return res
+        .status(501)
+        .json({ mensaje: "No se pudo actualizar el usuario." });
+    return res.status(200).json({ usuarioActualizado: actualizado });
   } catch (error) {
     next(error);
   }
