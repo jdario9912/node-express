@@ -17,9 +17,9 @@ POST http://localhost:3200/api/usuarios
 Content-Type: application/json
 
 {
-  "nombre": "Natalia",
-  "email": "natalia@email.com",
-  "password": "nataliasecreto"
+  "nombre": "Natali",
+  "email": "natali@email.com",
+  "password": "natalisecreto"
 }
 
 ###

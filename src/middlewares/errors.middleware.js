@@ -1,4 +1,4 @@
-export const castErrorHandler = (error, req, res, next) => {
+export const namedErrorHandler = (error, req, res, next) => {
   switch (error.name) {
     case "CastError":
       return res.status(400).json({ mensaje: "Formato incorrecto" });

@@ -1,32 +1,27 @@
 import { Usuario } from "../models/usuarios.model.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import { jwtSecret } from "../config.js";
+import { passCompare } from "../libs/pass.compare.js";
+import { tokenGenerador } from "../libs/token.js";
+
+export const singupController = async (req, res) => {
+  return res.json({ mensaje: "singup" });
+};
 
 export const loginController = async (req, res, next) => {
   try {
     const usuario = await Usuario.findOne({ email: req.body.email });
 
-    const passwordOk =
-      usuario === null
-        ? false
-        : await bcrypt.compare(req.body.password, usuario.passwordHash);
+    const passwordOk = passCompare(req.body.password, usuario);
 
     if (!(passwordOk && usuario))
       return res.status(401).json({ mensaje: "Credenciales incorrectas." });
 
-    const usuarioParaToken = {
-      id: usuario.id,
-      nombre: usuario.nombre,
-      email: usuario.email,
-    };
+    const { serializado, token } = tokenGenerador(usuario);
 
-    const token = jwt.sign(usuarioParaToken, jwtSecret, { expiresIn: 60 * 60 });
-
+    res.setHeader("Set-Cookie", serializado);
     res.setHeader("Authorization", `Bearer ${token}`);
     res.setHeader("Proxy-Authorization", `Bearer ${token}`);
 
-    return res.json({
+    return res.status(200).json({
       usuario: {
         id: usuario._id,
         email: req.body.email,
@@ -36,4 +31,8 @@ export const loginController = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export const logoutController = async (req, res) => {
+  return res.json({ mensaje: "logout" });
 };

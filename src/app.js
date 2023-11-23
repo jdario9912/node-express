@@ -1,13 +1,11 @@
 import express from "express";
 import cors from "cors";
-import { defaultController } from "./controllers/default.controller.js";
-import {
-  castErrorHandler,
-  defaultErrorHandler,
-} from "./controllers/errors.controller.js";
+import { routeDefaultMiddleware } from "./middlewares/route.default.middleware.js";
+import * as errors from "./middlewares/errors.middleware.js";
 import usuariosRouter from "./routers/usuarios.router.js";
 import morgan from "morgan";
-import loignRouter from "./routers/login.router.js";
+import authRouter from "./routers/auth.router.js";
+// import { cookieMiddleware } from "./middlewares/cookie.middleware.js";
 
 const app = express();
 
@@ -16,12 +14,12 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.disable("x-powered-by");
 
+app.use("/api/auth", authRouter);
+
 app.use("/api/usuarios", usuariosRouter);
 
-app.use("/api/login", loignRouter);
-
-app.use(defaultController);
-app.use(castErrorHandler);
-app.use(defaultErrorHandler);
+app.use(routeDefaultMiddleware);
+app.use(errors.namedErrorHandler);
+app.use(errors.defaultErrorHandler);
 
 export default app;

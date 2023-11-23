@@ -1,18 +1,13 @@
 import { Router } from "express";
-import {
-  actualizarPorId,
-  eliminarPorId,
-  guardarUsuario,
-  obtenerPorId,
-  obtenerTodos,
-} from "../controllers/usuarios.controller.js";
 
-const usuariosRouter = Router();
+import * as controller from "../controllers/usuarios.controller.js";
 
-usuariosRouter.post("/", guardarUsuario);
-usuariosRouter.get("/", obtenerTodos);
-usuariosRouter.get("/:id", obtenerPorId);
-usuariosRouter.delete("/:id", eliminarPorId);
-usuariosRouter.patch("/:id", actualizarPorId);
+const router = Router();
 
-export default usuariosRouter;
+router.post("/", controller.guardarUsuario);
+router.get("/", controller.obtenerTodos);
+router.get("/:id", controller.obtenerPorId);
+router.delete("/:id", controller.eliminarPorId);
+router.patch("/:id", controller.actualizarPorId);
+
+export default router;

@@ -1,35 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import { getUsuariosQuery, loginQuery } from "./libs/querys";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [usuarios, setUsuarios] = useState([]);
+  const [credenciales, setCredenciales] = useState({});
+
+  useEffect(() => {
+    (async () => {
+      setUsuarios(await getUsuariosQuery());
+    })();
+  }, []);
+
+  const login = async (e) => {
+    e.preventDefault();
+    await loginQuery(credenciales);
+  };
+
+  const onChangeHandler = (e) => {
+    setCredenciales({ ...credenciales, [e.target.name]: e.target.value });
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <form onSubmit={login}>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          onChange={(e) => onChangeHandler(e)}
+        />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          onChange={(e) => onChangeHandler(e)}
+        />
+        <button>login</button>
+      </form>
+
+      {usuarios && (
+        <>
+          {usuarios.map((u) => (
+            <div key={u.id}>
+              <p>{u.nombre}</p>
+              <p>{u.email}</p>
+            </div>
+          ))}
+        </>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
