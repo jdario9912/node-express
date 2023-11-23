@@ -1,17 +1,25 @@
 {
-  "name": "express",
+  "name": "node-express",
   "version": "1.0.0",
-  "description": "",
+  "description": "Api desarrollada con Node y Express.",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "dev": "docker-compose up -d && node --watch ./src",
-    "start": "babel-node src",
+    "dev": "docker-compose up -d && babel-node --watch src",
     "lint": "eslint .",
-    "build": "babel src --out-dir build"
+    "build": "babel src --out-dir build",
+    "start": "node build/index.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "node",
+    "express",
+    "babel",
+    "eslint",
+    "docker",
+    "mongodb",
+    "jsonwebtoken",
+    "git"
+  ],
+  "author": "Joel Dario Muñoz",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "5.1.1",

@@ -5,6 +5,7 @@ import * as errors from "./middlewares/errors.middleware.js";
 import usuariosRouter from "./routers/usuarios.router.js";
 import morgan from "morgan";
 import authRouter from "./routers/auth.router.js";
+import { homeController } from "./controllers/home.controller.js";
 // import { cookieMiddleware } from "./middlewares/cookie.middleware.js";
 
 const app = express();
@@ -13,6 +14,8 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 app.disable("x-powered-by");
+
+app.use("/", homeController);
 
 app.use("/api/auth", authRouter);
 
