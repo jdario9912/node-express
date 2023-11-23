@@ -21,11 +21,10 @@ export const loginController = async (req, res, next) => {
   try {
     const usuario = await Usuario.findOne({ email: req.body.email });
 
-    // aca falta el compare password que esta en usuarioModel
-    if (!(passwordOk && usuario))
-      return res.status(401).json({ mensaje: "Credenciales incorrectas." });
+    // verificar password
+    // verificar si el email ya existe
 
-    const { serializado, token } = tokenGenerador(usuario);
+    const { serializado, token } = jwtLibs.tokenGenerador(usuario);
 
     res.setHeader("Set-Cookie", serializado);
     res.setHeader("Authorization", `Bearer ${token}`);
