@@ -1,17 +1,27 @@
-import { Usuario } from "../models/usuarios.model.js";
-import { passCompare } from "../libs/pass.compare.js";
-import { tokenGenerador } from "../libs/token.js";
+import Usuario from "../models/usuarios.model.js";
+import * as jwtLibs from "../libs/jsonwebtoken.js";
 
 export const singupController = async (req, res) => {
-  return res.json({ mensaje: "singup" });
+  const { nombre, email, password } = req.body;
+
+  const nuevoUsuario = new Usuario({
+    nombre,
+    email,
+    passwordHash: await Usuario.bcryptPass(password),
+  });
+
+  await nuevoUsuario.save();
+
+  const { serializado } = jwtLibs.tokenGenerador(nuevoUsuario._id, 86400);
+
+  return res.json({ token: serializado });
 };
 
 export const loginController = async (req, res, next) => {
   try {
     const usuario = await Usuario.findOne({ email: req.body.email });
 
-    const passwordOk = passCompare(req.body.password, usuario);
-
+    // aca falta el compare password que esta en usuarioModel
     if (!(passwordOk && usuario))
       return res.status(401).json({ mensaje: "Credenciales incorrectas." });
 

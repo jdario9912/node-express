@@ -15,13 +15,12 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.disable("x-powered-by");
 
-app.use("/", homeController);
-
 app.use("/api/auth", authRouter);
 
 app.use("/api/usuarios", usuariosRouter);
 
-app.use(routeDefaultMiddleware);
+app.use("/api", homeController);
+app.use("/", routeDefaultMiddleware);
 app.use(errors.namedErrorHandler);
 app.use(errors.defaultErrorHandler);
 

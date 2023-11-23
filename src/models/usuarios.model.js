@@ -1,13 +1,13 @@
 import { Schema, model } from "mongoose";
-
+import * as bcpt from "../libs/bcrypt.js";
 const usuarioSchema = new Schema(
   {
     nombre: { require: true, type: String },
-    email: { require: true, type: String },
+    email: { require: true, type: String, unique: true },
     passwordHash: { require: true, type: String },
     creado: { require: true, type: Date },
     roles: [{ ref: "Roles", type: Schema.Types.ObjectId }],
-    actualizado: Date,
+    actualizado: { type: Date },
   },
   {
     timestamps: true,
@@ -15,13 +15,17 @@ const usuarioSchema = new Schema(
   }
 );
 
-usuarioSchema.set("toJSON", {
-  transform: (doc, objRetornado) => {
-    objRetornado.id = objRetornado._id;
+usuarioSchema.statics.bcryptPass = bcpt.passwordToHash;
 
-    delete objRetornado._id;
-    // delete objRetornado.passwordHash;
-  },
-});
+usuarioSchema.statics.comparePass = bcpt.passCompare;
 
-export const Usuario = model("Usuarios", usuarioSchema);
+// usuarioSchema.set("toJSON", {
+//   transform: (doc, objRetornado) => {
+//     objRetornado.id = objRetornado._id;
+
+//     delete objRetornado._id;
+//     delete objRetornado.passwordHash;
+//   },
+// });
+
+export default model("Usuarios", usuarioSchema);

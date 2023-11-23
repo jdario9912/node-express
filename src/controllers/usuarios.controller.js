@@ -1,24 +1,8 @@
-import { Usuario } from "../models/usuarios.model.js";
-import bcrypt from "bcrypt";
-
-export const guardarUsuario = async (req, res, next) => {
-  const body = req.body;
-  try {
-    const passwordHash = await bcrypt.hash(body.password, 10);
-
-    const usuario = new Usuario({ ...body, passwordHash, creado: Date.now() });
-
-    const usuarioGuardado = await usuario.save();
-
-    return res.status(200).json({ usuarioGuardado });
-  } catch (error) {
-    next(error);
-  }
-};
+import Usuario from "../models/usuarios.model.js";
 
 export const obtenerTodos = async (_, res, next) => {
   try {
-    const usuarios = await Usuario.find({});
+    const usuarios = await Usuario.find({}, { passwordHash: 0 });
 
     return res.status(200).json({
       usuarios: usuarios.sort((a, b) => a.nombre.localeCompare(b.nombre)),
@@ -55,7 +39,7 @@ export const eliminarPorId = async (req, res, next) => {
         .status(500)
         .json({ mensaje: "No se pudo eliminar el usuario." });
 
-    return res.status(204).send(null);
+    return res.status(204).json();
   } catch (error) {
     next(error);
   }
