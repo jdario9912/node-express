@@ -10,7 +10,7 @@ DELETE http://localhost:3200
 GET http://localhost:3200/api/usuarios
 
 ###
-GET http://localhost:3200/api/usuarios/655ce9af330d48cf24bbfc23
+GET http://localhost:3200/api/usuarios/65601fa44fc98e4cd29779f5
 
 ###
 POST http://localhost:3200/api/usuarios

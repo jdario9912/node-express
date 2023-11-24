@@ -3,13 +3,19 @@ POST http://localhost:3200/api/auth/singup
 Content-Type: application/json
 
 {
-  "nombre": "Raul",
-  "email": "raul@email.com",
+  "nombre": "Sandro",
+  "email": "sandro@email.com",
   "password": "secreto"
 }
 
 ### 
 POST http://localhost:3200/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "shakira@email.com",
+  "password": "secreto"
+}
 
 ###
 POST http://localhost:3200/api/auth/logout

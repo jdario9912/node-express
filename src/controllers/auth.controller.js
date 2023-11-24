@@ -1,30 +1,52 @@
 import Usuario from "../models/usuarios.model.js";
+import Roles from "../models/roles.model.js";
 import * as jwtLibs from "../libs/jsonwebtoken.js";
 
-export const singupController = async (req, res) => {
-  const { nombre, email, password } = req.body;
+export const singupController = async (req, res, next) => {
+  const { nombre, email, password, roles } = req.body;
 
-  const nuevoUsuario = new Usuario({
-    nombre,
-    email,
-    passwordHash: await Usuario.bcryptPass(password),
-  });
+  try {
+    let nuevoUsuario = new Usuario({
+      nombre,
+      email,
+      passwordHash: await Usuario.bcryptPass(password),
+    });
 
-  await nuevoUsuario.save();
+    if (roles) {
+      const rolesEncontrados = await Roles.find({ nombre: { $in: roles } });
+      nuevoUsuario.roles = rolesEncontrados.map((rol) => rol._id.toString());
+    } else {
+      const rolEncontrado = await Roles.findOne({ nombre: "usuario" });
+      nuevoUsuario.roles = [rolEncontrado._id.toString()];
+    }
 
-  const { serializado } = jwtLibs.tokenGenerador(nuevoUsuario._id, 86400);
+    const usuarioCreado = await nuevoUsuario.save();
 
-  return res.json({ token: serializado });
+    const { serializado, token } = jwtLibs.tokenGenerador(usuarioCreado._id, 86400);
+
+    res.setHeader("Set-Cookie", serializado);
+    res.setHeader("Authorization", `Bearer ${token}`);
+    res.setHeader("Proxy-Authorization", `Bearer ${token}`);
+    return res.json({ token });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const loginController = async (req, res, next) => {
   try {
-    const usuario = await Usuario.findOne({ email: req.body.email });
+    const usuario = await Usuario.findOne({ email: req.body.email }).populate("roles");
 
-    // verificar password
+    if (!usuario)
+      return res.status(404).json({ mensaje: "Usuario no existe." });
+
+    const match = await Usuario.comparePass(req.body.password, usuario.passwordHash);
+
+    if (!match)
+      return res.status(400).json({ mensaje: "Credenciales incorrectas" });
     // verificar si el email ya existe
 
-    const { serializado, token } = jwtLibs.tokenGenerador(usuario);
+    const { serializado, token } = jwtLibs.tokenGenerador(usuario._id, 86400);
 
     res.setHeader("Set-Cookie", serializado);
     res.setHeader("Authorization", `Bearer ${token}`);
@@ -45,3 +67,5 @@ export const loginController = async (req, res, next) => {
 export const logoutController = async (req, res) => {
   return res.json({ mensaje: "logout" });
 };
+
+// seguir con la proteccion de rutas. 1:36

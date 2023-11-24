@@ -6,9 +6,12 @@ import usuariosRouter from "./routers/usuarios.router.js";
 import morgan from "morgan";
 import authRouter from "./routers/auth.router.js";
 import { homeController } from "./controllers/home.controller.js";
+import { crearRoles } from "./libs/configuraciones.iniciales.js";
 // import { cookieMiddleware } from "./middlewares/cookie.middleware.js";
 
 const app = express();
+
+(async () => await crearRoles())();
 
 app.use(cors());
 app.use(express.json());
