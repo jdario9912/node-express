@@ -3,9 +3,10 @@ POST http://localhost:3200/api/auth/singup
 Content-Type: application/json
 
 {
-  "nombre": "Sandro",
-  "email": "sandro@email.com",
-  "password": "secreto"
+  "nombre": "Joel",
+  "email": "joel@email.com",
+  "password": "secreto",
+  "roles": ["administrador", "moderador", "usuario"]
 }
 
 ### 

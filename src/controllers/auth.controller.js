@@ -44,7 +44,6 @@ export const loginController = async (req, res, next) => {
 
     if (!match)
       return res.status(400).json({ mensaje: "Credenciales incorrectas" });
-    // verificar si el email ya existe
 
     const { serializado, token } = jwtLibs.tokenGenerador(usuario._id, 86400);
 
