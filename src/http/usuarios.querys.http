@@ -1,4 +1,4 @@
-@url = {{url}}
+@url = http://localhost:3200/api
 
 ###
 GET http://localhost:3200
@@ -22,12 +22,13 @@ Content-Type: application/json
 {
   "nombre": "Natali",
   "email": "natali@email.com",
-  "password": "natalisecreto"
+  "password": "natalisecreto",
+  "roles": ["moderador", "usuario"]
 }
 
 ###
 DELETE {{url}}/usuarios/655b9882b3c3b094401be6c0
-x-acces-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NjBlNTQ1MDFlNDg2OTI3NTQxMWNjYiIsImlhdCI6MTcwMDg0ODk2NiwiZXhwIjoxNzAwOTM1MzY2fQ.J77Ar9Y9bA6mDFyRX5lapnrWNPMoI3nDjig4HTMhIoA
+x-acces-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NjE0ZDk5NGIzNmMwZTk3Zjk3MjY4ZSIsImlhdCI6MTcwMDg3NTY3MywiZXhwIjoxNzAwOTYyMDczfQ.yw6N9ip9ziONzcaFbL0uESz13v6nEVKqLsizLx_9nI4
 
 ###
 PATCH {{url}}/usuarios/655ce62ff0cddaecbc9f09b0

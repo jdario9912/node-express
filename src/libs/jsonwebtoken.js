@@ -9,3 +9,7 @@ export const tokenGenerador = (idUsuario = "", expiresIn = 0) => {
 
   return { serializado: serializarCookieAuth("authToken", token), token };
 };
+
+export const decodificarToken = (token) => {
+  return jwt.verify(token, jwtSecret);
+};

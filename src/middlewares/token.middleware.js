@@ -1,9 +1,22 @@
-export const cookieMiddleware = (req, res, next) => {
-  const cookies = req.cookies;
-  const token = req.headers["x-acces-token"];
-  console.log(cookies, token);
+import { decodificarToken } from "../libs/jsonwebtoken";
+import Usuario from "../models/usuarios.model.js";
 
-  next();
+export const tokenMiddleware = async (req, res, next) => {
+  try {
+    const token = req.headers["x-acces-token"];
+
+    if (!token) return res.status(403).json({ mensaje: "La sesion expiro." });
+
+    const decodificado = decodificarToken(token);
+
+    const usuario = await Usuario.findById(decodificado.id, {
+      passwordHash: 0,
+    });
+
+    if (!usuario) return res.status(404).json("Usuario no encontrado.");
+
+    next();
+  } catch (error) {
+    return res.status(401).json({ mensaje: "No estas autorizado." });
+  }
 };
-
-// 1:41

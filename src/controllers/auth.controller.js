@@ -66,5 +66,3 @@ export const loginController = async (req, res, next) => {
 export const logoutController = async (req, res) => {
   return res.json({ mensaje: "logout" });
 };
-
-// seguir con la proteccion de rutas. 1:36
