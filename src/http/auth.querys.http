@@ -5,10 +5,9 @@ POST {{url}}/auth/singup
 Content-Type: application/json
 
 {
-  "nombre": "Joel",
-  "email": "joel@email.com",
-  "password": "joelsecreto",
-  "roles": ["administrador", "moderador", "usuario"]
+  "nombre": "Usuario10",
+  "email": "usuario10@email.com",
+  "password": "usuario10secreto"
 }
 
 ### 
@@ -16,8 +15,8 @@ POST {{url}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "shakira@email.com",
-  "password": "secreto"
+  "email": "natali@email.com",
+  "password": "natalisecreto"
 }
 
 ###

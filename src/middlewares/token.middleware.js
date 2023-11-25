@@ -15,6 +15,8 @@ export const tokenMiddleware = async (req, res, next) => {
 
     if (!usuario) return res.status(404).json("Usuario no encontrado.");
 
+    req.idUsuario = decodificado.id;
+
     next();
   } catch (error) {
     return res.status(401).json({ mensaje: "No estas autorizado." });

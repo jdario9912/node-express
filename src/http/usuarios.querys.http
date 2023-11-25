@@ -27,8 +27,8 @@ Content-Type: application/json
 }
 
 ###
-DELETE {{url}}/usuarios/655b9882b3c3b094401be6c0
-x-acces-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NjE0ZDk5NGIzNmMwZTk3Zjk3MjY4ZSIsImlhdCI6MTcwMDg3NTY3MywiZXhwIjoxNzAwOTYyMDczfQ.yw6N9ip9ziONzcaFbL0uESz13v6nEVKqLsizLx_9nI4
+DELETE {{url}}/usuarios/65615605ad4217d7fdf21319
+x-acces-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NjE1MDg3MzcwNmUxZmUxM2QwYTZkYyIsImlhdCI6MTcwMDg3OTQ2OCwiZXhwIjoxNzAwOTY1ODY4fQ.nre29kQVQkg3J2oT30ntRk_Rf81W0DwcS5G71-8Wl7s
 
 ###
 PATCH {{url}}/usuarios/655ce62ff0cddaecbc9f09b0

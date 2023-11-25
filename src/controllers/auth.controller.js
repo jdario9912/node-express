@@ -22,7 +22,10 @@ export const singupController = async (req, res, next) => {
 
     const usuarioCreado = await nuevoUsuario.save();
 
-    const { serializado, token } = jwtLibs.tokenGenerador(usuarioCreado._id, 86400);
+    const { serializado, token } = jwtLibs.tokenGenerador(
+      usuarioCreado._id,
+      86400
+    );
 
     res.setHeader("Set-Cookie", serializado);
     res.setHeader("Authorization", `Bearer ${token}`);
@@ -35,12 +38,17 @@ export const singupController = async (req, res, next) => {
 
 export const loginController = async (req, res, next) => {
   try {
-    const usuario = await Usuario.findOne({ email: req.body.email }).populate("roles");
+    const usuario = await Usuario.findOne({ email: req.body.email }).populate(
+      "roles"
+    );
 
     if (!usuario)
       return res.status(404).json({ mensaje: "Usuario no existe." });
 
-    const match = await Usuario.comparePass(req.body.password, usuario.passwordHash);
+    const match = await Usuario.comparePass(
+      req.body.password,
+      usuario.passwordHash
+    );
 
     if (!match)
       return res.status(400).json({ mensaje: "Credenciales incorrectas" });
@@ -52,6 +60,7 @@ export const loginController = async (req, res, next) => {
     res.setHeader("Proxy-Authorization", `Bearer ${token}`);
 
     return res.status(200).json({
+      token,
       usuario: {
         id: usuario._id,
         email: req.body.email,
