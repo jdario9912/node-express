@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getUsuariosQuery, loginQuery } from "./libs/querys";
+import { Button } from "@nextui-org/react";
 
 function App() {
   const [usuarios, setUsuarios] = useState([]);
@@ -35,7 +36,7 @@ function App() {
           id="password"
           onChange={(e) => onChangeHandler(e)}
         />
-        <button>login</button>
+        <Button color="primary">login</Button>
       </form>
 
       {usuarios && (
