@@ -2,11 +2,11 @@ version: '3.1'
 
 services:
   mongo:
-    image: mongo
+    image: mongo:7.0
     restart: always
-    container_name: node-express
+    container_name: ${MONGO_CONTAINER_NAME}
     ports:
-      - "27017:27017"
+      - ${MONGO_PORT}
     environment:
-      MONGO_INITDB_ROOT_USERNAME: joel
-      MONGO_INITDB_ROOT_PASSWORD: secreto
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASS}
